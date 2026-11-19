@@ -160,3 +160,10 @@ Task: "Add Power to src/Calculator.App/ViewModels/CalculatorOperation.cs"       
 
 - Commit with Conventional Commits and the scopes in `AGENTS.md` (`service`, `app`, `database`, `tests`, `readme`); one logical change per commit; agents commit only when asked
 - The new SQL script is numbered `003_` to continue the existing `001_`/`002_` database script sequence; this is unrelated to the `0003-` feature number
+
+---
+
+## Phase 7: Convergence
+
+- [ ] T027 Add a test to `tests/Calculator.Tests/SqlCalculatorFacadeTests.cs` that `Power` reports `Unavailable` when the executor fails and succeeds again afterwards, per Assumptions (unreachable database, recovery after an error) (partial)
+- [ ] T028 Confirm which SQL error numbers `POWER` raises on overflow in `database/003_create_power_procedure.sql` (currently 232, 3623 and 8115 are assumed), keep only verified numbers, and record the result in `specs/0003-raise-to-power/research.md` per T020/T023 and plan: research Decision 4 (partial)
