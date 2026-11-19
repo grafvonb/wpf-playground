@@ -22,6 +22,7 @@ namespace Calculator.Tests
         [DataRow(CalculatorOperation.Subtract, "Subtract")]
         [DataRow(CalculatorOperation.Multiply, "Multiply")]
         [DataRow(CalculatorOperation.Divide, "Divide")]
+        [DataRow(CalculatorOperation.Power, "Power")]
         public void Calculate_CallsMatchingFacadeMethodAndShowsResult(CalculatorOperation operation, string expectedCall)
         {
             _fake.NextResult = CalculationResult.Success(9m);
@@ -92,6 +93,19 @@ namespace Calculator.Tests
             _viewModel.CalculateCommand.Execute(CalculatorOperation.Divide);
 
             Assert.AreEqual("Cannot divide by zero", _viewModel.ErrorText);
+            Assert.AreEqual(string.Empty, _viewModel.ResultText);
+        }
+
+        [TestMethod]
+        public void Calculate_PowerFailure_ShowsMessageAndClearsResult()
+        {
+            _viewModel.FirstInput = "0";
+            _viewModel.SecondInput = "-1";
+            _fake.NextResult = CalculationResult.Failure(CalculationError.ZeroToNegativePower, "Cannot raise zero to a negative power");
+
+            _viewModel.CalculateCommand.Execute(CalculatorOperation.Power);
+
+            Assert.AreEqual("Cannot raise zero to a negative power", _viewModel.ErrorText);
             Assert.AreEqual(string.Empty, _viewModel.ResultText);
         }
 

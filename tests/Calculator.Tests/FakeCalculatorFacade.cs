@@ -35,6 +35,11 @@ namespace Calculator.Tests
             return Record("Divide", dividend, divisor);
         }
 
+        public CalculationResult Power(decimal @base, decimal exponent)
+        {
+            return Record("Power", @base, exponent);
+        }
+
         private CalculationResult Record(string operation, decimal left, decimal right)
         {
             LastOperation = operation;

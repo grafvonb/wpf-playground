@@ -42,6 +42,38 @@ namespace Calculator.Tests
             }
         }
 
+        private static readonly decimal[][] PowerPairs =
+        {
+            new[] { 2m, 3m }, new[] { 2m, 10m }, new[] { 5m, 0m }, new[] { 0m, 0m }, new[] { 2m, -1m },
+            new[] { 9m, 0.5m }, new[] { -2m, 3m }, new[] { 2.5m, 2.5m }, new[] { 10m, -3m },
+            new[] { 0m, -1m }, new[] { -8m, 0.5m }, new[] { 10m, 30m }, new[] { 10m, -1000m }
+        };
+
+        [TestMethod]
+        public void Power_MatchesInProcessFacade()
+        {
+            foreach (var p in PowerPairs)
+            {
+                var expected = _reference.Power(p[0], p[1]);
+                var actual = _sql.Power(p[0], p[1]);
+
+                Assert.AreEqual(expected.Error, actual.Error, p[0] + " ^ " + p[1]);
+                Assert.AreEqual(expected.ErrorMessage, actual.ErrorMessage, p[0] + " ^ " + p[1]);
+                Assert.IsTrue(
+                    Math.Abs(expected.Value - actual.Value) <= Math.Abs(expected.Value) * 0.000000000001m,
+                    p[0] + " ^ " + p[1]);
+            }
+        }
+
+        [TestMethod]
+        public void Power_ResultBeyondDatabaseRange_FailsWithTooLarge()
+        {
+            var result = _sql.Power(10m, 25m);
+
+            Assert.AreEqual(CalculationError.Overflow, result.Error);
+            Assert.AreEqual("Result is too large", result.ErrorMessage);
+        }
+
         [TestMethod]
         public void LargeOperands_FailWithOverflow()
         {
