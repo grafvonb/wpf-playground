@@ -4,6 +4,8 @@ namespace Calculator.Service.Internal
     {
         Ok,
         DivisionByZero,
-        Overflow
+        Overflow,
+        ZeroToNegativePower,
+        NotRealNumber
     }
 }

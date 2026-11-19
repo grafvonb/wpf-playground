@@ -61,6 +61,73 @@ namespace Calculator.Tests
         }
 
         [TestMethod]
+        public void Power_CallsPowerProcedureWithBothOperands()
+        {
+            var fake = new FakeProcedureExecutor
+            {
+                Handler = (p, a, b) => new ProcedureOutcome(ProcedureStatus.Ok, 8m)
+            };
+
+            var result = new SqlCalculatorFacade(fake).Power(2m, 3m);
+
+            Assert.AreEqual("dbo.Calc_Power", fake.LastProcedure);
+            Assert.AreEqual(8m, result.Value);
+        }
+
+        [TestMethod]
+        public void Power_InvalidInputs_FailWithoutCallingDatabase()
+        {
+            var facade = new SqlCalculatorFacade(new FakeProcedureExecutor
+            {
+                Handler = (p, a, b) => throw new InvalidOperationException("must not be called")
+            });
+
+            var zero = facade.Power(0m, -1m);
+            var notReal = facade.Power(-8m, 0.5m);
+
+            Assert.AreEqual(CalculationError.ZeroToNegativePower, zero.Error);
+            Assert.AreEqual("Cannot raise zero to a negative power", zero.ErrorMessage);
+            Assert.AreEqual(CalculationError.NotRealNumber, notReal.Error);
+            Assert.AreEqual("Result is not a real number", notReal.ErrorMessage);
+        }
+
+        [TestMethod]
+        public void Power_ProcedureStatuses_MapToSameErrorsAsInProcess()
+        {
+            var expected = new[]
+            {
+                new { Status = ProcedureStatus.ZeroToNegativePower, Error = CalculationError.ZeroToNegativePower, Message = "Cannot raise zero to a negative power" },
+                new { Status = ProcedureStatus.NotRealNumber, Error = CalculationError.NotRealNumber, Message = "Result is not a real number" },
+                new { Status = ProcedureStatus.Overflow, Error = CalculationError.Overflow, Message = "Result is too large" }
+            };
+
+            foreach (var item in expected)
+            {
+                var status = item.Status;
+                var facade = new SqlCalculatorFacade(new FakeProcedureExecutor
+                {
+                    Handler = (p, a, b) => new ProcedureOutcome(status, 0m)
+                });
+
+                var result = facade.Power(2m, 3m);
+
+                Assert.AreEqual(item.Error, result.Error);
+                Assert.AreEqual(item.Message, result.ErrorMessage);
+            }
+        }
+
+        [TestMethod]
+        public void Power_OperandOutsideDatabaseRange_ReportsPowerOverflowMessage()
+        {
+            var facade = new SqlCalculatorFacade(new FakeProcedureExecutor
+            {
+                Handler = (p, a, b) => throw new OverflowException()
+            });
+
+            Assert.AreEqual("Result is too large", facade.Power(2m, 3m).ErrorMessage);
+        }
+
+        [TestMethod]
         public void InfrastructureFailures_MapToUnavailable()
         {
             Exception[] failures =

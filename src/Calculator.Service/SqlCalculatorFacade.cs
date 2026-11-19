@@ -44,7 +44,25 @@ namespace Calculator.Service
             return Execute("dbo.Calc_Divide", dividend, divisor);
         }
 
+        public CalculationResult Power(decimal @base, decimal exponent)
+        {
+            switch (Arithmetic.PowerError(@base, exponent))
+            {
+                case CalculationError.ZeroToNegativePower:
+                    return ZeroToNegativePower();
+                case CalculationError.NotRealNumber:
+                    return NotRealNumber();
+            }
+
+            return Execute("dbo.Calc_Power", @base, exponent, PowerOverflow());
+        }
+
         private CalculationResult Execute(string procedureName, decimal first, decimal second)
+        {
+            return Execute(procedureName, first, second, Overflow());
+        }
+
+        private CalculationResult Execute(string procedureName, decimal first, decimal second, CalculationResult overflow)
         {
             try
             {
@@ -55,13 +73,17 @@ namespace Calculator.Service
                         return CalculationResult.Success(outcome.Value);
                     case ProcedureStatus.DivisionByZero:
                         return DivisionByZero();
+                    case ProcedureStatus.ZeroToNegativePower:
+                        return ZeroToNegativePower();
+                    case ProcedureStatus.NotRealNumber:
+                        return NotRealNumber();
                     default:
-                        return Overflow();
+                        return overflow;
                 }
             }
             catch (OverflowException)
             {
-                return Overflow();
+                return overflow;
             }
             catch (Exception ex) when (ex is SqlException || ex is InvalidOperationException || ex is TimeoutException)
             {
@@ -72,6 +94,21 @@ namespace Calculator.Service
         private static CalculationResult DivisionByZero()
         {
             return CalculationResult.Failure(CalculationError.DivisionByZero, "Cannot divide by zero");
+        }
+
+        private static CalculationResult ZeroToNegativePower()
+        {
+            return CalculationResult.Failure(CalculationError.ZeroToNegativePower, Arithmetic.ZeroToNegativePowerMessage);
+        }
+
+        private static CalculationResult NotRealNumber()
+        {
+            return CalculationResult.Failure(CalculationError.NotRealNumber, Arithmetic.NotRealNumberMessage);
+        }
+
+        private static CalculationResult PowerOverflow()
+        {
+            return CalculationResult.Failure(CalculationError.Overflow, Arithmetic.PowerOverflowMessage);
         }
 
         private static CalculationResult Overflow()

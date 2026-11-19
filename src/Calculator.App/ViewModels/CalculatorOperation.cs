@@ -5,6 +5,7 @@ namespace Calculator.App.ViewModels
         Add,
         Subtract,
         Multiply,
-        Divide
+        Divide,
+        Power
     }
 }

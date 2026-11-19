@@ -17,5 +17,8 @@ namespace Calculator.Service
 
         /// <summary>Divides <paramref name="dividend"/> by <paramref name="divisor"/>; a zero divisor yields DivisionByZero.</summary>
         CalculationResult Divide(decimal dividend, decimal divisor);
+
+        /// <summary>Raises <paramref name="base"/> to <paramref name="exponent"/>; invalid or out-of-range results yield a failure.</summary>
+        CalculationResult Power(decimal @base, decimal exponent);
     }
 }

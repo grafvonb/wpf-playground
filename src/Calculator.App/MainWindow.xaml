@@ -26,6 +26,9 @@
             <Button Content="÷" Style="{StaticResource OperationButtonStyle}"
                     Command="{Binding CalculateCommand}"
                     CommandParameter="{x:Static vm:CalculatorOperation.Divide}" />
+            <Button Content="xʸ" ToolTip="Raise to power" Style="{StaticResource OperationButtonStyle}"
+                    Command="{Binding CalculateCommand}"
+                    CommandParameter="{x:Static vm:CalculatorOperation.Power}" />
         </StackPanel>
 
         <TextBlock Style="{StaticResource ResultTextStyle}"

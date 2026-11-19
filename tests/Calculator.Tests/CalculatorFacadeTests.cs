@@ -51,6 +51,71 @@ namespace Calculator.Tests
         }
 
         [TestMethod]
+        public void Power_ReturnsResult()
+        {
+            AssertSuccess(8m, _facade.Power(2m, 3m));
+            AssertSuccess(1024m, _facade.Power(2m, 10m));
+            AssertSuccess(0.5m, _facade.Power(2m, -1m));
+            AssertSuccess(-8m, _facade.Power(-2m, 3m));
+            AssertSuccess(16m, _facade.Power(-2m, 4m));
+            AssertSuccess(1m, _facade.Power(1m, 500m));
+            AssertSuccess(-1m, _facade.Power(-1m, 501m));
+            AssertSuccess(1m, _facade.Power(-1m, 500m));
+            AssertSuccess(1073741824m, _facade.Power(2m, 30m));
+            AssertSuccess(1000000000000000000m, _facade.Power(10m, 18m));
+            AssertClose(3m, _facade.Power(9m, 0.5m));
+        }
+
+        [TestMethod]
+        public void Power_ExponentZero_ReturnsOne()
+        {
+            AssertSuccess(1m, _facade.Power(5m, 0m));
+            AssertSuccess(1m, _facade.Power(0m, 0m));
+            AssertSuccess(1m, _facade.Power(-5m, 0m));
+        }
+
+        [TestMethod]
+        public void Power_ResultTooSmallToRepresent_ReturnsZero()
+        {
+            AssertSuccess(0m, _facade.Power(10m, -1000m));
+        }
+
+        [TestMethod]
+        public void Power_InvalidInputs_ReturnSpecificFailures()
+        {
+            var zero = _facade.Power(0m, -1m);
+            AssertFailure(CalculationError.ZeroToNegativePower, zero);
+            Assert.AreEqual("Cannot raise zero to a negative power", zero.ErrorMessage);
+
+            var notReal = _facade.Power(-8m, 0.5m);
+            AssertFailure(CalculationError.NotRealNumber, notReal);
+            Assert.AreEqual("Result is not a real number", notReal.ErrorMessage);
+        }
+
+        [TestMethod]
+        public void Power_ResultTooLarge_ReturnsOverflow()
+        {
+            foreach (var result in new[]
+            {
+                _facade.Power(10m, 1000m),
+                _facade.Power(decimal.MaxValue, 2m),
+                _facade.Power(10m, 1000000000m),
+                _facade.Power(decimal.MaxValue, 1.5m)
+            })
+            {
+                AssertFailure(CalculationError.Overflow, result);
+                Assert.AreEqual("Result is too large", result.ErrorMessage);
+            }
+        }
+
+        [TestMethod]
+        public void Power_MatchingMoreThanOneError_ReportsFirstRule()
+        {
+            AssertFailure(CalculationError.ZeroToNegativePower, _facade.Power(0m, -0.5m));
+            AssertFailure(CalculationError.NotRealNumber, _facade.Power(-1000m, 1000.5m));
+        }
+
+        [TestMethod]
         public void Operations_OutsideDecimalRange_ReturnOverflowFailure()
         {
             AssertFailure(CalculationError.Overflow, _facade.Multiply(decimal.MaxValue, 2m));
@@ -100,6 +165,12 @@ namespace Calculator.Tests
             Assert.AreEqual(expected, result.Value);
             Assert.AreEqual(CalculationError.None, result.Error);
             Assert.AreEqual(string.Empty, result.ErrorMessage);
+        }
+
+        private static void AssertClose(decimal expected, CalculationResult result)
+        {
+            Assert.IsTrue(result.IsSuccess);
+            Assert.IsTrue(Math.Abs(expected - result.Value) <= Math.Abs(expected) * 0.000000000001m);
         }
 
         private static void AssertFailure(CalculationError expected, CalculationResult result)
