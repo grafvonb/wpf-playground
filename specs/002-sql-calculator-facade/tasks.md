@@ -22,8 +22,8 @@ description: "Task list for the database-backed calculator facade"
 
 **Purpose**: Folders and project references
 
-- [ ] T001 Create the `database/` folder at the repository root for the SQL scripts
-- [ ] T002 Add `<Reference Include="System.Data" />` and `<Reference Include="System.Configuration" />` as needed to `src/Calculator.Service/Calculator.Service.csproj` and `src/Calculator.App/Calculator.App.csproj`, with no NuGet packages (research.md item 1)
+- [X] T001 Create the `database/` folder at the repository root for the SQL scripts
+- [X] T002 Add `<Reference Include="System.Data" />` and `<Reference Include="System.Configuration" />` as needed to `src/Calculator.Service/Calculator.Service.csproj` and `src/Calculator.App/Calculator.App.csproj`, with no NuGet packages (research.md item 1)
 
 ---
 
@@ -33,10 +33,10 @@ description: "Task list for the database-backed calculator facade"
 
 **CRITICAL**: complete before any user story
 
-- [ ] T003 [P] Add `Unavailable` to the enum in `src/Calculator.Service/CalculationError.cs`, appended after `Overflow` (data-model.md `CalculationError.Unavailable`)
-- [ ] T004 [P] Create `src/Calculator.Service/Internal/ProcedureOutcome.cs` with Status (Ok, DivisionByZero, Overflow) and Value per data-model.md `ProcedureOutcome.Status` and `ProcedureOutcome.Value`; the Status enum goes in its own file `src/Calculator.Service/Internal/ProcedureStatus.cs`
-- [ ] T005 [P] Create `src/Calculator.Service/Internal/IProcedureExecutor.cs` with `ProcedureOutcome Execute(string procedureName, decimal left, decimal right)`; it may throw for infrastructure failures (research.md item 8)
-- [ ] T006 [P] Create `database/001_create_database.sql`, an idempotent script that creates `CalculatorDb` only if it does not exist (contracts/stored-procedures.md)
+- [X] T003 [P] Add `Unavailable` to the enum in `src/Calculator.Service/CalculationError.cs`, appended after `Overflow` (data-model.md `CalculationError.Unavailable`)
+- [X] T004 [P] Create `src/Calculator.Service/Internal/ProcedureOutcome.cs` with Status (Ok, DivisionByZero, Overflow) and Value per data-model.md `ProcedureOutcome.Status` and `ProcedureOutcome.Value`; the Status enum goes in its own file `src/Calculator.Service/Internal/ProcedureStatus.cs`
+- [X] T005 [P] Create `src/Calculator.Service/Internal/IProcedureExecutor.cs` with `ProcedureOutcome Execute(string procedureName, decimal left, decimal right)`; it may throw for infrastructure failures (research.md item 8)
+- [X] T006 [P] Create `database/001_create_database.sql`, an idempotent script that creates `CalculatorDb` only if it does not exist (contracts/stored-procedures.md)
 
 **Checkpoint**: shared types compile; `dotnet build WpfPlayground.sln` is green
 
@@ -50,16 +50,16 @@ description: "Task list for the database-backed calculator facade"
 
 ### Tests for User Story 1
 
-- [ ] T007 [P] [US1] Create `tests/Calculator.Tests/FakeProcedureExecutor.cs`, a configurable fake `IProcedureExecutor` (returns a given outcome or throws a given exception, records calls)
-- [ ] T008 [P] [US1] Create `tests/Calculator.Tests/SqlCalculatorFacadeTests.cs` with unit tests: status Ok gives Success(value); DivisionByZero status gives DivisionByZero with the same message as `CalculatorFacade`; Overflow status gives Overflow with the same message; a zero divisor never reaches the executor; each operation calls its own procedure (`Calc_Add`, `Calc_Subtract`, `Calc_Multiply`, `Calc_Divide`)
-- [ ] T009 [P] [US1] Create `tests/Calculator.Tests/SqlCalculatorFacadeIntegrationTests.cs` with a parity test over a reference set (positive, negative, zero, many decimals, max/min decimal values, overflow cases) comparing `SqlCalculatorFacade` with `CalculatorFacade`; each test calls `Assert.Inconclusive` when the database is unreachable; the connection string comes from the `CALCULATOR_TEST_CONNECTION` environment variable, defaulting to `Server=.;Database=CalculatorDb;Integrated Security=true;Connect Timeout=5`
+- [X] T007 [P] [US1] Create `tests/Calculator.Tests/FakeProcedureExecutor.cs`, a configurable fake `IProcedureExecutor` (returns a given outcome or throws a given exception, records calls)
+- [X] T008 [P] [US1] Create `tests/Calculator.Tests/SqlCalculatorFacadeTests.cs` with unit tests: status Ok gives Success(value); DivisionByZero status gives DivisionByZero with the same message as `CalculatorFacade`; Overflow status gives Overflow with the same message; a zero divisor never reaches the executor; each operation calls its own procedure (`Calc_Add`, `Calc_Subtract`, `Calc_Multiply`, `Calc_Divide`)
+- [X] T009 [P] [US1] Create `tests/Calculator.Tests/SqlCalculatorFacadeIntegrationTests.cs` with a parity test over a reference set (positive, negative, zero, many decimals, max/min decimal values, overflow cases) comparing `SqlCalculatorFacade` with `CalculatorFacade`; each test calls `Assert.Inconclusive` when the database is unreachable; the connection string comes from the `CALCULATOR_TEST_CONNECTION` environment variable, defaulting to `Server=.;Database=CalculatorDb;Integrated Security=true;Connect Timeout=5`
 
 ### Implementation for User Story 1
 
-- [ ] T010 [US1] Create `database/002_create_procedures.sql` with `CREATE OR ALTER PROCEDURE` for `dbo.Calc_Add`, `dbo.Calc_Subtract`, `dbo.Calc_Multiply`, `dbo.Calc_Divide`, following contracts/stored-procedures.md (return codes 0, 1, 2; TRY/CATCH mapping error 8115 to 2; `@Result` NULL on failure)
-- [ ] T011 [US1] Create `src/Calculator.Service/Internal/SqlProcedureExecutor.cs`: opens a new connection per call, sets `CommandType.StoredProcedure`, `CommandTimeout = 5`, binds typed `SqlDbType.Decimal` parameters (never string concatenation), reads the return code and output, converts out-of-range values to the Overflow status (research.md items 2, 3, 5)
-- [ ] T012 [US1] Create `src/Calculator.Service/SqlCalculatorFacade.cs` implementing `ICalculatorFacade` with a public constructor taking the connection string; a zero divisor returns DivisionByZero without calling the database; map statuses per the data-model.md mapping table; keep it stateless (depends on T003-T005, T011)
-- [ ] T013 [US1] Run the scripts with `sqlcmd -S . -E -b -i database\001_create_database.sql` and `database\002_create_procedures.sql`, run T009, and adjust the parameter types in T010/T011 until the parity set passes (research.md item 2); if exact parity is impossible, return Overflow and record the finding in research.md
+- [X] T010 [US1] Create `database/002_create_procedures.sql` with `CREATE OR ALTER PROCEDURE` for `dbo.Calc_Add`, `dbo.Calc_Subtract`, `dbo.Calc_Multiply`, `dbo.Calc_Divide`, following contracts/stored-procedures.md (return codes 0, 1, 2; TRY/CATCH mapping error 8115 to 2; `@Result` NULL on failure)
+- [X] T011 [US1] Create `src/Calculator.Service/Internal/SqlProcedureExecutor.cs`: opens a new connection per call, sets `CommandType.StoredProcedure`, `CommandTimeout = 5`, binds typed `SqlDbType.Decimal` parameters (never string concatenation), reads the return code and output, converts out-of-range values to the Overflow status (research.md items 2, 3, 5)
+- [X] T012 [US1] Create `src/Calculator.Service/SqlCalculatorFacade.cs` implementing `ICalculatorFacade` with a public constructor taking the connection string; a zero divisor returns DivisionByZero without calling the database; map statuses per the data-model.md mapping table; keep it stateless (depends on T003-T005, T011)
+- [X] T013 [US1] Run the scripts with `sqlcmd -S . -E -b -i database\001_create_database.sql` and `database\002_create_procedures.sql`, run T009, and adjust the parameter types in T010/T011 until the parity set passes (research.md item 2); if exact parity is impossible, return Overflow and record the finding in research.md
 
 **Checkpoint**: US1 works end to end; unit and integration tests pass
 
@@ -73,12 +73,12 @@ description: "Task list for the database-backed calculator facade"
 
 ### Tests for User Story 2
 
-- [ ] T014 [P] [US2] Add tests to `tests/Calculator.Tests/SqlCalculatorFacadeTests.cs`: the executor throwing `SqlException`-like, `InvalidOperationException` and `TimeoutException` yields Failure(Unavailable) with a readable message for all four operations, and nothing is thrown
-- [ ] T015 [P] [US2] Add tests to `tests/Calculator.Tests/SqlCalculatorFacadeIntegrationTests.cs`: a connection string to a non-existent server or database returns Unavailable within about 6 seconds; a missing procedure (call through the executor with an unknown name) returns Unavailable while the other operations still work; the facade is called from several threads at once and all results are correct (FR-007)
+- [X] T014 [P] [US2] Add tests to `tests/Calculator.Tests/SqlCalculatorFacadeTests.cs`: the executor throwing `SqlException`-like, `InvalidOperationException` and `TimeoutException` yields Failure(Unavailable) with a readable message for all four operations, and nothing is thrown
+- [X] T015 [P] [US2] Add tests to `tests/Calculator.Tests/SqlCalculatorFacadeIntegrationTests.cs`: a connection string to a non-existent server or database returns Unavailable within about 6 seconds; a missing procedure (call through the executor with an unknown name) returns Unavailable while the other operations still work; the facade is called from several threads at once and all results are correct (FR-007)
 
 ### Implementation for User Story 2
 
-- [ ] T016 [US2] In `src/Calculator.Service/SqlCalculatorFacade.cs`, catch `SqlException`, `InvalidOperationException` and `TimeoutException` around the executor call and return `CalculationResult.Failure(CalculationError.Unavailable, "The calculation service is unavailable")`; make sure `Connect Timeout` and the 5-second command timeout are enforced in `src/Calculator.Service/Internal/SqlProcedureExecutor.cs` (research.md item 4)
+- [X] T016 [US2] In `src/Calculator.Service/SqlCalculatorFacade.cs`, catch `SqlException`, `InvalidOperationException` and `TimeoutException` around the executor call and return `CalculationResult.Failure(CalculationError.Unavailable, "The calculation service is unavailable")`; make sure `Connect Timeout` and the 5-second command timeout are enforced in `src/Calculator.Service/Internal/SqlProcedureExecutor.cs` (research.md item 4)
 
 **Checkpoint**: US1 and US2 pass together
 
@@ -92,13 +92,13 @@ description: "Task list for the database-backed calculator facade"
 
 ### Tests for User Story 3
 
-- [ ] T017 [P] [US3] Create `tests/Calculator.Tests/CalculatorFacadeFactoryTests.cs`: missing setting gives `CalculatorFacade`; `InProcess` gives `CalculatorFacade`; `Sql` with a connection string gives `SqlCalculatorFacade`; an unknown value throws a descriptive `ConfigurationErrorsException`; `InProcess` never reads the connection string
+- [X] T017 [P] [US3] Create `tests/Calculator.Tests/CalculatorFacadeFactoryTests.cs`: missing setting gives `CalculatorFacade`; `InProcess` gives `CalculatorFacade`; `Sql` with a connection string gives `SqlCalculatorFacade`; an unknown value throws a descriptive `ConfigurationErrorsException`; `InProcess` never reads the connection string
 
 ### Implementation for User Story 3
 
-- [ ] T018 [P] [US3] Create `src/Calculator.App/App.config` with `CalculatorBackend` = `InProcess` and the `CalculatorDb` connection string (`Server=.;Database=CalculatorDb;Integrated Security=true;Connect Timeout=5`), per contracts/configuration.md; no credentials
-- [ ] T019 [US3] Create `src/Calculator.App/CalculatorFacadeFactory.cs` with a method that takes backend name and a connection-string provider and returns the facade (testable without a config file)
-- [ ] T020 [US3] Update `src/Calculator.App/App.xaml.cs` to read the settings through `ConfigurationManager` and build the facade with `CalculatorFacadeFactory`; on a configuration error show a clear message and shut down; keep all logic out of code-behind beyond composition (constitution II) (depends on T018, T019)
+- [X] T018 [P] [US3] Create `src/Calculator.App/App.config` with `CalculatorBackend` = `InProcess` and the `CalculatorDb` connection string (`Server=.;Database=CalculatorDb;Integrated Security=true;Connect Timeout=5`), per contracts/configuration.md; no credentials
+- [X] T019 [US3] Create `src/Calculator.App/CalculatorFacadeFactory.cs` with a method that takes backend name and a connection-string provider and returns the facade (testable without a config file)
+- [X] T020 [US3] Update `src/Calculator.App/App.xaml.cs` to read the settings through `ConfigurationManager` and build the facade with `CalculatorFacadeFactory`; on a configuration error show a clear message and shut down; keep all logic out of code-behind beyond composition (constitution II) (depends on T018, T019)
 
 **Checkpoint**: all three stories work
 
@@ -106,9 +106,9 @@ description: "Task list for the database-backed calculator facade"
 
 ## Phase 6: Polish & Cross-Cutting
 
-- [ ] T021 [P] Add a short "Database backend" section to the repository README (or create `README.md` if absent) pointing to `specs/002-sql-calculator-facade/quickstart.md`
-- [ ] T022 Run `dotnet build WpfPlayground.sln` and `dotnet test tests\Calculator.Tests\Calculator.Tests.csproj`, and confirm no C# 8 features and no new packages
-- [ ] T023 Run the steps in `specs/002-sql-calculator-facade/quickstart.md` end to end, including stopping the SQL Server service and checking the "unavailable" message within about 5 seconds
+- [X] T021 [P] Add a short "Database backend" section to the repository README (or create `README.md` if absent) pointing to `specs/002-sql-calculator-facade/quickstart.md`
+- [X] T022 Run `dotnet build WpfPlayground.sln` and `dotnet test tests\Calculator.Tests\Calculator.Tests.csproj`, and confirm no C# 8 features and no new packages
+- [X] T023 Run the steps in `specs/002-sql-calculator-facade/quickstart.md` end to end, including stopping the SQL Server service and checking the "unavailable" message within about 5 seconds
 
 ---
 

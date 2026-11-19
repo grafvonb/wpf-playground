@@ -31,3 +31,7 @@
 
 ## 8. Testing without a database (FR-011)
 - **Decision**: internal `IProcedureExecutor` seam (tests already have `InternalsVisibleTo`); integration tests mark themselves Inconclusive when the DB is unreachable.
+
+## Parity result (T013)
+
+Add, subtract and multiply match the in-process facade exactly for the tested pairs. Division is exact only to 18 decimal places (T-SQL DECIMAL(38,18) result vs. .NET 28 significant digits); the integration test allows a 1e-18 difference. Operands beyond DECIMAL(18,9) are reported as Overflow.
