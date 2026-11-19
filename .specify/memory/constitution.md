@@ -1,50 +1,65 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+Version change: (unratified template) -> 1.0.0
+Modified principles: none (all principles newly defined from template placeholders)
+Added sections: Core Principles I-V, Technology & Build Constraints, Development Workflow, Governance
+Removed sections: none
+Deferred TODOs: none
+-->
+# WPF Playground Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Target Platform: .NET Framework 4.8 and C# 7.3 Only
+All projects MUST target .NET Framework 4.8 and set `LangVersion` to `7.3`. C# 8.0+ features
+MUST NOT be used, including records, nullable reference types, switch expressions, and default
+interface members. Rationale: the app is a deliberately constrained WPF learning project, and
+the language level must be predictable and compile identically everywhere.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. MVVM Separation (NON-NEGOTIABLE)
+Views MUST bind to ViewModels through data binding, `INotifyPropertyChanged`, and `ICommand`.
+Code-behind MUST NOT contain business logic; it is limited to view-only concerns. ViewModels
+MUST NOT reference View types or WPF controls. Rationale: separation keeps logic testable and
+the UI replaceable.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Simplicity First
+Third-party frameworks and libraries MUST NOT be added unless the justification is recorded in
+the feature plan. A small hand-written `ViewModelBase` and `RelayCommand` MUST be preferred over
+MVVM frameworks. Abstractions MUST be introduced only when a concrete need exists (YAGNI).
+Rationale: fewer dependencies keep the project easy to learn and maintain.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Testability
+ViewModels and services MUST be unit-testable without launching any UI, and MUST be covered by
+MSTest tests. Dependencies that touch the file system, dialogs, or time MUST be accessed through
+interfaces so they can be substituted in tests. Rationale: logic outside the UI thread and
+visual tree can be verified quickly and reliably.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Code and XAML Style
+Each class MUST live in its own file, named after the class. Names MUST be meaningful and
+consistent. XAML MUST stay tidy: shared styles, brushes, and templates MUST be defined in
+resource dictionaries rather than duplicated inline. Rationale: consistent structure reduces
+navigation cost and review noise.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Technology & Build Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- The application MUST build with Visual Studio 2026 or MSBuild on Windows.
+- The build MUST succeed with no errors from a clean checkout using the documented command.
+- The UI framework is WPF; no other UI technology may be mixed in without a recorded
+  justification in the plan.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- Specs, plans, and tasks follow the Spec Kit flow (specify, plan, tasks, implement).
+- Every plan MUST include a Constitution Check against the principles above.
+- Changes MUST keep the build green and all MSTest tests passing before being considered done.
+- Reviews MUST verify the C# 7.3 constraint and the absence of business logic in code-behind.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes other practices. Amendments MUST be documented in this file with a
+version bump, a rationale, and an update of dependent plans where affected. Versioning follows
+semantic versioning: MAJOR for removed or redefined principles, MINOR for added or materially
+expanded guidance, PATCH for clarifications. Compliance MUST be checked in every plan and
+review; any violation MUST be explicitly justified in the plan's complexity tracking.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-11-19 | **Last Amended**: 2026-11-19
