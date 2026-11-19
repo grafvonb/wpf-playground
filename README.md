@@ -1,6 +1,18 @@
-# wpf-playground
+# WPF Calculator with a SQL Server Stored Procedures Service
 
-WPF calculator (.NET Framework 4.8) with a swappable calculation backend.
+Example app showing a WPF application with an MVVM calculator UI and a service layer that can be implemented
+either in-process or with SQL Server stored procedures.
+
+## Projects
+
+- `src\Calculator.App` – WPF UI (MVVM). Selects the calculation backend at startup from `App.config`.
+- `src\Calculator.Service` – `ICalculatorFacade` with two implementations: `CalculatorFacade` (in-process) and
+  `SqlCalculatorFacade` (SQL Server stored procedures).
+- `database` – SQL scripts that create `CalculatorDb` and the `Calc_*` stored procedures.
+- `tests\Calculator.Tests` – MSTest unit and integration tests.
+- `specs` – Spec Kit feature specifications, plans and tasks.
+
+Built with .NET Framework 4.8 and C# 7.3.
 
 ## SQL Server backend
 
