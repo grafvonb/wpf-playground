@@ -1,0 +1,36 @@
+<Window x:Class="Calculator.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:Calculator.App.ViewModels"
+        Title="Calculator" Width="360" SizeToContent="Height" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen">
+    <StackPanel Margin="16">
+        <TextBlock Text="First number" />
+        <TextBox Style="{StaticResource InputBoxStyle}"
+                 Text="{Binding FirstInput, UpdateSourceTrigger=PropertyChanged}" />
+
+        <TextBlock Text="Second number" />
+        <TextBox Style="{StaticResource InputBoxStyle}"
+                 Text="{Binding SecondInput, UpdateSourceTrigger=PropertyChanged}" />
+
+        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+            <Button Content="+" Style="{StaticResource OperationButtonStyle}"
+                    Command="{Binding CalculateCommand}"
+                    CommandParameter="{x:Static vm:CalculatorOperation.Add}" />
+            <Button Content="−" Style="{StaticResource OperationButtonStyle}"
+                    Command="{Binding CalculateCommand}"
+                    CommandParameter="{x:Static vm:CalculatorOperation.Subtract}" />
+            <Button Content="×" Style="{StaticResource OperationButtonStyle}"
+                    Command="{Binding CalculateCommand}"
+                    CommandParameter="{x:Static vm:CalculatorOperation.Multiply}" />
+            <Button Content="÷" Style="{StaticResource OperationButtonStyle}"
+                    Command="{Binding CalculateCommand}"
+                    CommandParameter="{x:Static vm:CalculatorOperation.Divide}" />
+        </StackPanel>
+
+        <TextBlock Style="{StaticResource ResultTextStyle}"
+                   Text="{Binding ResultText}" />
+        <TextBlock Style="{StaticResource ErrorTextStyle}"
+                   Text="{Binding ErrorText}" />
+    </StackPanel>
+</Window>
