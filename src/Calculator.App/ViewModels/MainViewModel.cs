@@ -82,6 +82,8 @@ namespace Calculator.App.ViewModels
                     return _facade.Multiply(left, right);
                 case CalculatorOperation.Divide:
                     return _facade.Divide(left, right);
+                case CalculatorOperation.Power:
+                    return _facade.Power(left, right);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(operation));
             }
