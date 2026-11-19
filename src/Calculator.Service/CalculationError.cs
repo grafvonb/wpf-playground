@@ -4,6 +4,7 @@ namespace Calculator.Service
     {
         None,
         DivisionByZero,
-        Overflow
+        Overflow,
+        Unavailable
     }
 }

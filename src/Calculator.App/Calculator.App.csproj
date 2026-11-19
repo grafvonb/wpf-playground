@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="System.Configuration" />
     <ProjectReference Include="..\Calculator.Service\Calculator.Service.csproj" />
   </ItemGroup>
 

@@ -81,7 +81,7 @@ namespace Calculator.Tests
                 .ToArray();
 
             CollectionAssert.AreEqual(
-                new[] { "CalculationError", "CalculationResult", "CalculatorFacade", "ICalculatorFacade" },
+                new[] { "CalculationError", "CalculationResult", "CalculatorFacade", "ICalculatorFacade", "SqlCalculatorFacade" },
                 publicTypes);
         }
 
