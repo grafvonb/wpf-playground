@@ -28,11 +28,11 @@ Paths follow plan.md: `src/Calculator.Service/`, `src/Calculator.App/`, `tests/C
 
 **Purpose**: Solution and project scaffolding
 
-- [ ] T001 Create `WpfPlayground.sln` at the repository root and the folders `src/` and `tests/`
-- [ ] T002 [P] Create `src/Calculator.Service/Calculator.Service.csproj` (SDK-style, `net48` class library, `LangVersion` 7.3, no WPF references)
-- [ ] T003 [P] Create `src/Calculator.App/Calculator.App.csproj` (SDK-style, `net48`, `UseWPF` true, `OutputType` WinExe, `LangVersion` 7.3, project reference to Calculator.Service)
-- [ ] T004 [P] Create `tests/Calculator.Tests/Calculator.Tests.csproj` (SDK-style, `net48`, `LangVersion` 7.3, MSTest.TestFramework and MSTest.TestAdapter package references, project references to Calculator.Service and Calculator.App)
-- [ ] T005 Add all three projects to `WpfPlayground.sln` and verify `msbuild WpfPlayground.sln /restore` succeeds
+- [X] T001 Create `WpfPlayground.sln` at the repository root and the folders `src/` and `tests/`
+- [X] T002 [P] Create `src/Calculator.Service/Calculator.Service.csproj` (SDK-style, `net48` class library, `LangVersion` 7.3, no WPF references)
+- [X] T003 [P] Create `src/Calculator.App/Calculator.App.csproj` (SDK-style, `net48`, `UseWPF` true, `OutputType` WinExe, `LangVersion` 7.3, project reference to Calculator.Service)
+- [X] T004 [P] Create `tests/Calculator.Tests/Calculator.Tests.csproj` (SDK-style, `net48`, `LangVersion` 7.3, MSTest.TestFramework and MSTest.TestAdapter package references, project references to Calculator.Service and Calculator.App)
+- [X] T005 Add all three projects to `WpfPlayground.sln` and verify `msbuild WpfPlayground.sln /restore` succeeds
 
 ---
 
@@ -42,15 +42,15 @@ Paths follow plan.md: `src/Calculator.Service/`, `src/Calculator.App/`, `tests/C
 
 **CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 [P] Create `CalculationError` enum (`None`, `DivisionByZero`, `Overflow`) in `src/Calculator.Service/CalculationError.cs` per data-model.md `CalculationError`
-- [ ] T007 Create immutable `CalculationResult` with `Success(decimal)` and `Failure(CalculationError, string)` factories in `src/Calculator.Service/CalculationResult.cs`, citing data-model.md `CalculationResult.IsSuccess`, `CalculationResult.Value`, `CalculationResult.Error`, `CalculationResult.ErrorMessage` (depends on T006)
-- [ ] T008 Create public `ICalculatorFacade` (Add, Subtract, Multiply, Divide) in `src/Calculator.Service/ICalculatorFacade.cs` exactly as in contracts/ICalculatorFacade.md (depends on T007)
-- [ ] T009 [P] Create `ViewModelBase` implementing `INotifyPropertyChanged` with a `SetProperty` helper in `src/Calculator.App/ViewModels/ViewModelBase.cs`
-- [ ] T010 [P] Create `RelayCommand` (`ICommand` with `Action<object>` execute and optional `Func<object, bool>` canExecute) in `src/Calculator.App/ViewModels/RelayCommand.cs`
-- [ ] T011 [P] Create `CalculatorOperation` enum (`Add`, `Subtract`, `Multiply`, `Divide`) in `src/Calculator.App/ViewModels/CalculatorOperation.cs`
-- [ ] T012 [P] Create the shared styles resource dictionary in `src/Calculator.App/Resources/Styles.xaml`
-- [ ] T013 Create `App.xaml` (merging `Resources/Styles.xaml`, `StartupUri` MainWindow.xaml) and `App.xaml.cs` in `src/Calculator.App/`
-- [ ] T014 [P] Create `FakeCalculatorFacade` (configurable result, records calls) in `tests/Calculator.Tests/FakeCalculatorFacade.cs`
+- [X] T006 [P] Create `CalculationError` enum (`None`, `DivisionByZero`, `Overflow`) in `src/Calculator.Service/CalculationError.cs` per data-model.md `CalculationError`
+- [X] T007 Create immutable `CalculationResult` with `Success(decimal)` and `Failure(CalculationError, string)` factories in `src/Calculator.Service/CalculationResult.cs`, citing data-model.md `CalculationResult.IsSuccess`, `CalculationResult.Value`, `CalculationResult.Error`, `CalculationResult.ErrorMessage` (depends on T006)
+- [X] T008 Create public `ICalculatorFacade` (Add, Subtract, Multiply, Divide) in `src/Calculator.Service/ICalculatorFacade.cs` exactly as in contracts/ICalculatorFacade.md (depends on T007)
+- [X] T009 [P] Create `ViewModelBase` implementing `INotifyPropertyChanged` with a `SetProperty` helper in `src/Calculator.App/ViewModels/ViewModelBase.cs`
+- [X] T010 [P] Create `RelayCommand` (`ICommand` with `Action<object>` execute and optional `Func<object, bool>` canExecute) in `src/Calculator.App/ViewModels/RelayCommand.cs`
+- [X] T011 [P] Create `CalculatorOperation` enum (`Add`, `Subtract`, `Multiply`, `Divide`) in `src/Calculator.App/ViewModels/CalculatorOperation.cs`
+- [X] T012 [P] Create the shared styles resource dictionary in `src/Calculator.App/Resources/Styles.xaml`
+- [X] T013 Create `App.xaml` (merging `Resources/Styles.xaml`, `StartupUri` MainWindow.xaml) and `App.xaml.cs` in `src/Calculator.App/`
+- [X] T014 [P] Create `FakeCalculatorFacade` (configurable result, records calls) in `tests/Calculator.Tests/FakeCalculatorFacade.cs`
 
 **Checkpoint**: Foundation ready; user story work can begin
 
@@ -66,18 +66,18 @@ Paths follow plan.md: `src/Calculator.Service/`, `src/Calculator.App/`, `tests/C
 
 > Write these tests first and confirm they fail before implementation.
 
-- [ ] T015 [P] [US1] Facade tests for happy-path add, subtract, multiply, divide (positive, negative, decimal operands) in `tests/Calculator.Tests/CalculatorFacadeTests.cs`
-- [ ] T016 [P] [US1] `ResultFormatter` tests: 6 ÷ 3 gives "2", 1 ÷ 3 gives "0.3333333333", trailing zeros dropped, at most 10 decimals (FR-011) in `tests/Calculator.Tests/ResultFormatterTests.cs`
-- [ ] T017 [P] [US1] `MainViewModel` tests using `FakeCalculatorFacade`: each operation calls the matching facade method and sets `ResultText` (data-model.md `MainViewModel.ResultText`, `MainViewModel.ErrorText`); a second calculation replaces the first result in `tests/Calculator.Tests/MainViewModelTests.cs`
+- [X] T015 [P] [US1] Facade tests for happy-path add, subtract, multiply, divide (positive, negative, decimal operands) in `tests/Calculator.Tests/CalculatorFacadeTests.cs`
+- [X] T016 [P] [US1] `ResultFormatter` tests: 6 ÷ 3 gives "2", 1 ÷ 3 gives "0.3333333333", trailing zeros dropped, at most 10 decimals (FR-011) in `tests/Calculator.Tests/ResultFormatterTests.cs`
+- [X] T017 [P] [US1] `MainViewModel` tests using `FakeCalculatorFacade`: each operation calls the matching facade method and sets `ResultText` (data-model.md `MainViewModel.ResultText`, `MainViewModel.ErrorText`); a second calculation replaces the first result in `tests/Calculator.Tests/MainViewModelTests.cs`
 
 ### Implementation for User Story 1
 
-- [ ] T018 [P] [US1] Create `internal static class Arithmetic` with add, subtract, multiply, divide on `decimal` in `src/Calculator.Service/Internal/Arithmetic.cs`
-- [ ] T019 [US1] Create public `CalculatorFacade : ICalculatorFacade` returning `CalculationResult.Success` for the four operations in `src/Calculator.Service/CalculatorFacade.cs` (depends on T008, T018)
-- [ ] T020 [P] [US1] Create `ResultFormatter` using `Math.Round(value, 10, MidpointRounding.AwayFromZero)` and trailing-zero removal in `src/Calculator.App/Formatting/ResultFormatter.cs` (FR-011)
-- [ ] T021 [US1] Create `MainViewModel` with `FirstInput`, `SecondInput`, `ResultText`, `ErrorText`, a `CalculateCommand` taking a `CalculatorOperation`, a constructor taking `ICalculatorFacade`, and parsing of decimal input, in `src/Calculator.App/ViewModels/MainViewModel.cs` (depends on T009, T010, T011, T020)
-- [ ] T022 [US1] Create `MainWindow.xaml` with two input boxes, four operation buttons bound to `CalculateCommand`, and a result display, using styles from `Resources/Styles.xaml`, in `src/Calculator.App/MainWindow.xaml` (depends on T012, T021)
-- [ ] T023 [US1] Create `MainWindow.xaml.cs` with only `InitializeComponent`, and set `DataContext` to `new MainViewModel(new CalculatorFacade())` in `src/Calculator.App/App.xaml.cs` startup (depends on T019, T021, T022)
+- [X] T018 [P] [US1] Create `internal static class Arithmetic` with add, subtract, multiply, divide on `decimal` in `src/Calculator.Service/Internal/Arithmetic.cs`
+- [X] T019 [US1] Create public `CalculatorFacade : ICalculatorFacade` returning `CalculationResult.Success` for the four operations in `src/Calculator.Service/CalculatorFacade.cs` (depends on T008, T018)
+- [X] T020 [P] [US1] Create `ResultFormatter` using `Math.Round(value, 10, MidpointRounding.AwayFromZero)` and trailing-zero removal in `src/Calculator.App/Formatting/ResultFormatter.cs` (FR-011)
+- [X] T021 [US1] Create `MainViewModel` with `FirstInput`, `SecondInput`, `ResultText`, `ErrorText`, a `CalculateCommand` taking a `CalculatorOperation`, a constructor taking `ICalculatorFacade`, and parsing of decimal input, in `src/Calculator.App/ViewModels/MainViewModel.cs` (depends on T009, T010, T011, T020)
+- [X] T022 [US1] Create `MainWindow.xaml` with two input boxes, four operation buttons bound to `CalculateCommand`, and a result display, using styles from `Resources/Styles.xaml`, in `src/Calculator.App/MainWindow.xaml` (depends on T012, T021)
+- [X] T023 [US1] Create `MainWindow.xaml.cs` with only `InitializeComponent`, and set `DataContext` to `new MainViewModel(new CalculatorFacade())` in `src/Calculator.App/App.xaml.cs` startup (depends on T019, T021, T022)
 
 **Checkpoint**: User Story 1 is fully functional and testable on its own
 
@@ -91,14 +91,14 @@ Paths follow plan.md: `src/Calculator.Service/`, `src/Calculator.App/`, `tests/C
 
 ### Tests for User Story 2
 
-- [ ] T024 [P] [US2] Facade tests: `Divide(1, 0)` and `Divide(0, 0)` return `DivisionByZero`; `Multiply(decimal.MaxValue, 2)` and `Add(decimal.MaxValue, 1)` return `Overflow`; no exceptions thrown, in `tests/Calculator.Tests/CalculatorFacadeTests.cs`
-- [ ] T025 [P] [US2] `MainViewModel` tests: empty or non-numeric input sets `ErrorText` and does not call the fake facade; facade failure sets `ErrorText` and clears `ResultText`; a later valid calculation clears the error, in `tests/Calculator.Tests/MainViewModelTests.cs`
+- [X] T024 [P] [US2] Facade tests: `Divide(1, 0)` and `Divide(0, 0)` return `DivisionByZero`; `Multiply(decimal.MaxValue, 2)` and `Add(decimal.MaxValue, 1)` return `Overflow`; no exceptions thrown, in `tests/Calculator.Tests/CalculatorFacadeTests.cs`
+- [X] T025 [P] [US2] `MainViewModel` tests: empty or non-numeric input sets `ErrorText` and does not call the fake facade; facade failure sets `ErrorText` and clears `ResultText`; a later valid calculation clears the error, in `tests/Calculator.Tests/MainViewModelTests.cs`
 
 ### Implementation for User Story 2
 
-- [ ] T026 [US2] Update `Divide` in `src/Calculator.Service/CalculatorFacade.cs` to return `CalculationResult.Failure(CalculationError.DivisionByZero, ...)` when the divisor is zero, and wrap add, subtract, multiply, divide in `OverflowException` handling returning `CalculationError.Overflow`
-- [ ] T027 [US2] Update `MainViewModel.CalculateCommand` in `src/Calculator.App/ViewModels/MainViewModel.cs` to clear previous result and error first, show "Enter a valid number" on parse failure without calling the facade, and map failed results to `ErrorText` (data-model.md `MainViewModel.ErrorText`, `MainViewModel.ResultText`)
-- [ ] T028 [US2] Add an error message display bound to `ErrorText` (styled via `Resources/Styles.xaml`) in `src/Calculator.App/MainWindow.xaml`
+- [X] T026 [US2] Update `Divide` in `src/Calculator.Service/CalculatorFacade.cs` to return `CalculationResult.Failure(CalculationError.DivisionByZero, ...)` when the divisor is zero, and wrap add, subtract, multiply, divide in `OverflowException` handling returning `CalculationError.Overflow`
+- [X] T027 [US2] Update `MainViewModel.CalculateCommand` in `src/Calculator.App/ViewModels/MainViewModel.cs` to clear previous result and error first, show "Enter a valid number" on parse failure without calling the facade, and map failed results to `ErrorText` (data-model.md `MainViewModel.ErrorText`, `MainViewModel.ResultText`)
+- [X] T028 [US2] Add an error message display bound to `ErrorText` (styled via `Resources/Styles.xaml`) in `src/Calculator.App/MainWindow.xaml`
 
 **Checkpoint**: User Stories 1 and 2 both work independently
 
@@ -112,13 +112,13 @@ Paths follow plan.md: `src/Calculator.Service/`, `src/Calculator.App/`, `tests/C
 
 ### Tests for User Story 3
 
-- [ ] T029 [P] [US3] Add a test asserting `Calculator.Service` references no WPF assemblies (`PresentationFramework`, `PresentationCore`, `WindowsBase`) and no reference to `Calculator.App`, in `tests/Calculator.Tests/CalculatorFacadeTests.cs`
-- [ ] T030 [US3] Add a test asserting `Arithmetic` is not public and `ICalculatorFacade` and `CalculatorFacade` are the only public calculation types in `Calculator.Service`, in `tests/Calculator.Tests/CalculatorFacadeTests.cs`
+- [X] T029 [P] [US3] Add a test asserting `Calculator.Service` references no WPF assemblies (`PresentationFramework`, `PresentationCore`, `WindowsBase`) and no reference to `Calculator.App`, in `tests/Calculator.Tests/CalculatorFacadeTests.cs`
+- [X] T030 [US3] Add a test asserting `Arithmetic` is not public and `ICalculatorFacade` and `CalculatorFacade` are the only public calculation types in `Calculator.Service`, in `tests/Calculator.Tests/CalculatorFacadeTests.cs`
 
 ### Implementation for User Story 3
 
-- [ ] T031 [US3] Verify `src/Calculator.Service/Calculator.Service.csproj` has no WPF or `Calculator.App` references, and that `src/Calculator.App/ViewModels/MainViewModel.cs` contains no arithmetic operators on operands (calls only `ICalculatorFacade`); fix any violation
-- [ ] T032 [US3] Make every facade method in `src/Calculator.Service/CalculatorFacade.cs` stateless and thread-safe as specified in contracts/ICalculatorFacade.md, and add XML documentation comments to `src/Calculator.Service/ICalculatorFacade.cs`
+- [X] T031 [US3] Verify `src/Calculator.Service/Calculator.Service.csproj` has no WPF or `Calculator.App` references, and that `src/Calculator.App/ViewModels/MainViewModel.cs` contains no arithmetic operators on operands (calls only `ICalculatorFacade`); fix any violation
+- [X] T032 [US3] Make every facade method in `src/Calculator.Service/CalculatorFacade.cs` stateless and thread-safe as specified in contracts/ICalculatorFacade.md, and add XML documentation comments to `src/Calculator.Service/ICalculatorFacade.cs`
 
 **Checkpoint**: All user stories are independently functional
 
@@ -126,10 +126,10 @@ Paths follow plan.md: `src/Calculator.Service/`, `src/Calculator.App/`, `tests/C
 
 ## Phase 6: Polish & Cross-Cutting Concerns
 
-- [ ] T033 [P] Confirm all projects declare `LangVersion` 7.3 and contain no C# 8+ syntax across `src/` and `tests/`
-- [ ] T034 [P] Confirm one class per file and tidy XAML (no duplicated inline styles) in `src/Calculator.App/`
-- [ ] T035 Run `msbuild WpfPlayground.sln /restore` and all MSTest tests; all must pass
-- [ ] T036 Run the manual scenarios in `specs/001-calculator-service-app/quickstart.md`
+- [X] T033 [P] Confirm all projects declare `LangVersion` 7.3 and contain no C# 8+ syntax across `src/` and `tests/`
+- [X] T034 [P] Confirm one class per file and tidy XAML (no duplicated inline styles) in `src/Calculator.App/`
+- [X] T035 Run `msbuild WpfPlayground.sln /restore` and all MSTest tests; all must pass
+- [X] T036 Run the manual scenarios in `specs/001-calculator-service-app/quickstart.md`
 
 ---
 
