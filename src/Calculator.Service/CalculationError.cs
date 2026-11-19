@@ -5,6 +5,8 @@ namespace Calculator.Service
         None,
         DivisionByZero,
         Overflow,
+        ZeroToNegativePower,
+        NotRealNumber,
         Unavailable
     }
 }

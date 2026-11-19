@@ -57,6 +57,10 @@ namespace Calculator.Service.Internal
                         return new ProcedureOutcome(ProcedureStatus.Ok, ReadResult(result));
                     case 1:
                         return new ProcedureOutcome(ProcedureStatus.DivisionByZero, 0m);
+                    case 3:
+                        return new ProcedureOutcome(ProcedureStatus.ZeroToNegativePower, 0m);
+                    case 4:
+                        return new ProcedureOutcome(ProcedureStatus.NotRealNumber, 0m);
                     default:
                         return new ProcedureOutcome(ProcedureStatus.Overflow, 0m);
                 }
